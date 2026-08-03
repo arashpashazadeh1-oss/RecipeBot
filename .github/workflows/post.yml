@@ -31,7 +31,7 @@ jobs:
           python main.py
       
       - name: Upload history file (optional)
-        uses: actions/upload-artifact@v4  # <--- نسخه v4 در این خط بسیار مهم است
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: recipe-history
