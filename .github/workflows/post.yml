@@ -1,0 +1,40 @@
+name: Post Daily Recipe
+
+on:
+  schedule:
+    # هر روز ساعت 14:00 UTC (یعنی 17:30 به وقت ایران)
+    - cron: '0 14 * * *'
+  # برای تست دستی (می‌توانی از این استفاده کنی)
+  workflow_dispatch:
+
+jobs:
+  post-recipe:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+      
+      - name: Run recipe bot
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          python main.py
+      
+      - name: Upload history file (optional)
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: recipe-history
+          path: sent_recipes.json
