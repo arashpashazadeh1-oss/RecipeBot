@@ -2,9 +2,7 @@ name: Post Daily Recipe
 
 on:
   schedule:
-    # هر روز ساعت 14:00 UTC (یعنی 17:30 به وقت ایران)
     - cron: '0 14 * * *'
-  # برای اجرای دستی (تست)
   workflow_dispatch:
 
 jobs:
@@ -33,7 +31,7 @@ jobs:
           python main.py
       
       - name: Upload history file (optional)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4  # <--- نسخه v4 در این خط بسیار مهم است
         if: always()
         with:
           name: recipe-history
